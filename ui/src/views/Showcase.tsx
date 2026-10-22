@@ -110,7 +110,7 @@ function FlyingPlip({ x, y, docked }: { x: number; y: number; docked: boolean })
   )
 }
 
-function Wallpaper() {
+export function Wallpaper() {
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#06131f]">
       <div className="absolute -left-40 -top-40 size-[900px] rounded-full bg-[#0891b2] opacity-55 blur-[140px]" />
@@ -121,13 +121,19 @@ function Wallpaper() {
   )
 }
 
-function MenuBar({ fileRef, highlight }: { fileRef: React.RefObject<HTMLSpanElement | null>; highlight: boolean }) {
-  const items = ['Edit', 'Insert', 'Slide', 'Format', 'Arrange', 'View', 'Play', 'Window', 'Help']
+const KEYNOTE_MENUS = ['Edit', 'Insert', 'Slide', 'Format', 'Arrange', 'View', 'Play', 'Window', 'Help']
+
+export function MenuBar({ fileRef, highlight, app = 'Keynote', items = KEYNOTE_MENUS }: {
+  fileRef?: React.RefObject<HTMLSpanElement | null>
+  highlight: boolean
+  app?: string
+  items?: string[]
+}) {
   return (
     <div className="absolute inset-x-0 top-0 z-30 flex h-[34px] items-center justify-between bg-black/25 px-4 text-[13.5px] text-white/95 backdrop-blur-2xl">
       <div className="flex items-center gap-5">
         <Apple className="size-4 fill-white" />
-        <span className="font-bold">Keynote</span>
+        <span className="font-bold">{app}</span>
         <span ref={fileRef} className={highlight ? 'rounded-[5px] bg-white/20 px-1.5 py-0.5 -mx-1.5' : ''}>File</span>
         {items.map((item) => <span key={item}>{item}</span>)}
       </div>
@@ -168,7 +174,7 @@ function FileMenu({ exportRef }: { exportRef: React.RefObject<HTMLDivElement | n
   )
 }
 
-function AppWindow() {
+export function AppWindow() {
   return (
     <div className="absolute left-[190px] top-[96px] z-10 h-[700px] w-[1060px] overflow-hidden rounded-[14px] bg-[#1d1d22] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)] ring-1 ring-white/10">
       <div className="flex h-[52px] items-center gap-2 border-b border-white/[0.06] bg-[#26262c] px-4">
@@ -204,7 +210,7 @@ function AppWindow() {
   )
 }
 
-function SystemCursor({ x, y }: { x: number; y: number }) {
+export function SystemCursor({ x, y }: { x: number; y: number }) {
   return (
     <svg className="absolute z-[55]" style={{ left: x, top: y }} width="22" height="30" viewBox="0 0 22 30" aria-hidden>
       <path d="M2 2 L2 23 L7.5 17.8 L11.2 26.5 L14.6 25 L11 16.5 L18.5 16.5 Z" fill="black" stroke="white" strokeWidth="1.6" strokeLinejoin="round" />

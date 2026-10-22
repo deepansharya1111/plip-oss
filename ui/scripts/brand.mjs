@@ -3,6 +3,7 @@
 //   assets/brand/dmg/background@2x.png   1320x880 for Retina (build_dmg joins both with tiffutil)
 // Finder draws Plip at (180, 232) and Applications at (480, 232), 112 px icons, names
 // underneath in dark text, so each name sits on a light frosted card.
+// Also the README's download button, docs/img/download-mac.png (2x, shown at 300x68 on light and dark GitHub).
 // Usage: npm run brand
 import { mkdirSync, readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
@@ -50,4 +51,26 @@ for (const [scale, name] of [[1, 'background.png'], [2, 'background@2x.png']]) {
   await page.close()
   console.log('saved', name)
 }
+// A light pill reads as the button on GitHub's light and dark themes alike; the corners stay transparent.
+const button = `<html><head><style>
+@font-face { font-family: Geist; src: url(data:font/woff2;base64,${geist}) format('woff2'); font-weight: 100 900; }
+* { margin: 0; box-sizing: border-box; }
+body { width: 300px; height: 68px; background: transparent; font-family: Geist, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+a { position: absolute; inset: 4px; display: flex; align-items: center; gap: 13px; padding: 0 20px 0 12px; border-radius: 16px; color: #0b1020;
+  background: linear-gradient(135deg, #dbe7fe 0%, #a9c6fb 45%, #6d9cf7 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), inset 0 0 0 1px rgba(44,88,230,0.28), 0 3px 8px -4px rgba(15,23,42,0.45); }
+.icon { width: 40px; height: 40px; flex: none; border-radius: 11px; display: grid; place-items: center; background: #0b1020; box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
+b { display: block; font-size: 19px; font-weight: 640; letter-spacing: -0.02em; line-height: 1.1; }
+small { display: block; margin-top: 3px; font-size: 12px; font-weight: 520; color: rgba(11,16,32,0.62); letter-spacing: -0.005em; }
+</style></head><body><a>
+<span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#bcd2fd" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m6.5 10 5.5 5.5 5.5-5.5"/><path d="M5 20h14"/></svg></span>
+<span><b>Download for Mac</b><small>Free · macOS 13+ · Apple Silicon</small></span>
+</a></body></html>`
+const page = await browser.newPage({ viewport: { width: 300, height: 68 }, deviceScaleFactor: 2 })
+await page.setContent(button)
+await page.evaluate(() => document.fonts.ready)
+await page.screenshot({ path: resolve(here, '../../docs/img/download-mac.png'), omitBackground: true })
+await page.close()
+console.log('saved download-mac.png')
+
 await browser.close()

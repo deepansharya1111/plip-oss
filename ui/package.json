@@ -8,6 +8,7 @@
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "shots": "node scripts/shots.mjs",
+    "film": "node scripts/film.mjs",
     "e2e": "node scripts/e2e.mjs",
     "brand": "node scripts/brand.mjs"
   },
